@@ -5,6 +5,7 @@ void setup() {
   Serial.begin(115200);
 
   SigfoxMessage msg;
+  
   CCS811init();
   sigfoxInit(msg);
   sendDataSigfox(msg);
