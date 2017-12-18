@@ -2,7 +2,7 @@
 #include "CCS811.h"
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   SigfoxMessage msg;
   //comment
@@ -12,6 +12,7 @@ void setup() {
 }
 
 void loop() {
+  Serial.println("Mesure de la qualité de l'air ");
   displayDataCCS811();
   delay(1000);
 }
