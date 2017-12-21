@@ -1,15 +1,16 @@
 #include "sigfoxNetwork.h"
 #include "CCS811.h"
 #include "SI7006.h"
+
+SigfoxMessage msg;
+
 void setup() {
   Serial.begin(9600);
 
-  SigfoxMessage msg;
   CCS811init();
   /*Wire.begin(); // Initialise I2C communication as MASTER
   si7006Init();*/
   sigfoxInit(msg);
-  sendDataSigfox(msg);
   }
 
 void loop() {
@@ -17,6 +18,8 @@ void loop() {
   displayDataCCS811();
   //Serial.println("--------------Mesure de la température--------------");
   //si7006Loop();
+  sendDataSigfox(msg);
   Serial.println();
-  delay(1000);
+  LowPower.sleep(1000);
+  //LowPower.sleep(15 * 60 * 1000);   //Endormir le système 15 min
 }
