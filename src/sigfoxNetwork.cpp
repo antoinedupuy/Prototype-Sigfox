@@ -16,13 +16,13 @@ void sigfoxInit(SigfoxMessage msg){
   // Enable debug prints and LED indication
   SigFox.debug();
   // Read and convert the module temperature (PARTIE A SUPPRIMER PLUS TARD)
-  msg.moduleTemperature = (int8_t) SigFox.internalTemperature();
+  /*msg.moduleTemperature = (int8_t) SigFox.internalTemperature();
   msg.temp2 = 35;
   Serial.print("Internal temp: ");
   Serial.print(msg.moduleTemperature, HEX); // display what we will send in Hexadecimal
   Serial.print(" (");
   Serial.print(msg.moduleTemperature); // display what we will send in Decimal
-  Serial.println(" x100 deg C)");
+  Serial.println(" x100 deg C)");*/
 
   // Clears all pending interrupts
   SigFox.status();

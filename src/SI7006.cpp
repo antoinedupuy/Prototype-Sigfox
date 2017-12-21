@@ -2,14 +2,20 @@
 
 void si7006Init(void)
 {
-  while(!Serial) {};
-  Serial.println("Debug");
+  //while(!Serial) {};
 
-
+  uint16_t reading;
   // Start I2C transmission
-  Wire.beginTransmission(ADDR);
+  Wire.beginTransmission(0X40);
+  Wire.write(0xE0);
   // Stop I2C transmission
   Wire.endTransmission();
+  Wire.requestFrom(0X40, 2);
+  while(Wire.available() < 2); // if two bytes were received
+  reading = Wire.read();  // receive high byte (overwrites previous reading)
+  reading = reading << 8;    // shift high byte to be high 8 bits
+  reading |= Wire.read(); // receive low byte as lower 8 bits
+  Serial.println(reading);   // print the reading
   delay(300);
 }
 

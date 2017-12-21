@@ -1,68 +1,32 @@
 #include "CCS811.h"
-byte CO2;
-byte TVOC;
 
-byte getCO2(){
-  return CO2;
-}
+#define CCS811_ADDR 0x5B //Adresse I2C
 
-byte getTVOC(){
-  return TVOC;
-}
+CCS811 mySensor(CCS811_ADDR);
 
-bool writeMeasureMode(byte address, byte mode) {
-  Wire.beginTransmission(ADDR);
-  Wire.write(address);
-  Wire.write(mode);
-  return Wire.endTransmission();
-}
-
-void readData(void) {
-  byte buf[4];
-
-  Wire.beginTransmission(ADDR);
-  Wire.write(ALG_RESULT_DATA);
-  bool _error = Wire.endTransmission();
-
-  if (_error == 0)
-  {
-    Wire.requestFrom(ADDR, sizeof(buf));
-    delay(1);
-
-    if(Wire.available() == 4)
-    {
-      for(int i=0; i<4; i++)
-      {
-          buf[i] = Wire.read();      // Lire sensor en i2c + stocker
-        //Serial.print(buf[i]);
-      }
-    }
-
-      CO2 &= 0x00;                  //On init l'octet CO2
-      CO2 = buf[0]&0xF0;            //On recupere la partie haute du 1er octet lu
-      buf[1] &= 0x0F;               //On recupere la partie basse du 2eme octet lu
-      CO2 |= buf[1];                //On le stock dans CO2
-
-      TVOC &= 0x00;                  //On init l'octet TVOC
-      TVOC = buf[2]&0xF0;            //On recupere la partie haute du 3eme octet lu
-      buf[1] &= 0x0F;               //On recupere la partie basse du 4eme octet lu
-      TVOC |= buf[3];                //On le stock dans TVOC
-  }
-}
-
-void displayDataCCS811(){
-  readData();
-  Serial.print("CO2 : ");
-  Serial.print(' ');
-  Serial.print(getCO2(), DEC);
-  Serial.print(" TVOC : ");
-  Serial.print(' ');
-  Serial.println(getTVOC(), DEC);
-}
-
+//Initialisation du capteur de qualité d'air
 void CCS811init(){
-  Wire.begin();
-  if (writeMeasureMode(MEAS_MODE, MODE_CONST) == false) {
-    Serial.println("Erreur config mode de mesure");
+  Serial.begin(9600);
+
+  CCS811Core::status returnCode = mySensor.begin();
+  if (returnCode != CCS811Core::SENSOR_SUCCESS)
+  {
+    Serial.println(".begin() returned with an error.");
+    while (1);
   }
+}
+
+//Acquisition des valeurs d'émission de CO2 (en ppm) et de TVOC (en ppb)
+void displayDataCCS811(){
+  if (mySensor.dataAvailable()) //Data capteur d'air dispo
+  {
+    mySensor.readAlgorithmResults();
+    Serial.print("CO2 : ");
+    Serial.print(mySensor.getCO2());
+    Serial.println("ppm");
+    Serial.print("tVOC : ");
+    Serial.print(mySensor.getTVOC());
+    Serial.println("ppb");
+  }
+delay(10);
 }
