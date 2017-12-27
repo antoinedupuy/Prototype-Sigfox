@@ -31,8 +31,9 @@ void sigfoxInit(SigfoxMessage msg){
 
 void sendDataSigfox(SigfoxMessage msg){
   SigFox.begin();
+  delay(100);
   SigFox.beginPacket();
-  msg.temp2 = 35;
+  //msg.C02 = get;
   SigFox.write((uint8_t*)&msg, sizeof(SigfoxMessage));
 
   Serial.print("Status: ");

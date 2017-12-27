@@ -5,7 +5,7 @@
 
 typedef struct __attribute__ ((packed)) sigfox_message {
   int8_t moduleTemperature; //Soit 1 octet sur les 12 dispos
-  int8_t temp2;
+  int8_t C02;
 } SigfoxMessage;
 
 //Redémmarer le système
