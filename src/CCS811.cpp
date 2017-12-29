@@ -17,12 +17,13 @@ void CCS811init(){
 }
 
 //Acquisition des valeurs d'émission de CO2 (en ppm) et de TVOC (en ppb)
-void displayDataCCS811(){
+void displayDataCCS811(SigfoxMessage * msg){
   if (mySensor.dataAvailable()) //Data capteur d'air dispo
   {
     mySensor.readAlgorithmResults();
     Serial.print("CO2 : ");
     Serial.print(mySensor.getCO2());
+    msg->CO2 = mySensor.getCO2(); // On écrit la valeur du CO2 dans la struct du message Sigfox
     Serial.println("ppm");
     Serial.print("tVOC : ");
     Serial.print(mySensor.getTVOC());

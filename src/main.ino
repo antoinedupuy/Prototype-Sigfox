@@ -16,12 +16,12 @@ void setup() {
 
 void loop() {
   Serial.println("--------------Mesure de la qualité de l'air-------------- ");
-  displayDataCCS811();
+  displayDataCCS811(&msg);
   //Serial.println("--------------Mesure de la température--------------");
   //si7006Loop();
-  //sendDataSigfox(msg);
+  sendDataSigfox(msg);
   Serial.println();
   //LowPower.sleep(1000);
-  delay(1000);
+  delay(6000);
   //LowPower.sleep(15 * 60 * 1000);   //Endormir le système 15 min
 }

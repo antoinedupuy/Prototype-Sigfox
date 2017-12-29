@@ -33,7 +33,8 @@ void sendDataSigfox(SigfoxMessage msg){
   SigFox.begin();
   delay(100);
   SigFox.beginPacket();
-  //msg.C02 = get;
+  /*Serial.println("Valeur avant envoi en hexa : ");
+  Serial.println(msg.CO2, HEX);*/
   SigFox.write((uint8_t*)&msg, sizeof(SigfoxMessage));
 
   Serial.print("Status: ");

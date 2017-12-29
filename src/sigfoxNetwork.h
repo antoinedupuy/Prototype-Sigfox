@@ -4,8 +4,8 @@
 #include <SigFox.h>
 
 typedef struct __attribute__ ((packed)) sigfox_message {
-  int8_t moduleTemperature; //Soit 1 octet sur les 12 dispos
-  int8_t C02;
+  //int8_t moduleTemperature; //Soit 1 octet sur les 12 dispos
+  int16_t CO2; //On utilisera 2 octets pour la valeur du C02 (car valeur oscillera entre 400 et 10 000, donc entre 9 et 14 bits)
 } SigfoxMessage;
 
 //Redémmarer le système
