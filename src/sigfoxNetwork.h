@@ -6,8 +6,11 @@
 
 typedef struct __attribute__ ((packed)) sigfox_message {
   //int8_t moduleTemperature; //Soit 1 octet sur les 12 dispos
-  int16_t CO2; //On utilisera 2 octets pour la valeur du C02 (car valeur oscillera entre 400 et 10 000, donc entre 9 et 14 bits)
-  int8_t TVOC; //1 octets pour le TVOC
+  uint16_t CO2; //On utilisera 2 octets pour la valeur du C02 (car valeur oscillera entre 400 et 10 000, donc entre 9 et 14 bits)
+  uint8_t TVOC; //1 octet pour le TVOC
+  uint8_t temperature; //1 octet pour la temperature (on passera à 2 si besoin de plus de précisions)
+  uint8_t hygrometrie; //1 octet pour l'hygrométrie
+  uint16_t luminosite; //2 octets pour la luminosite
 } SigfoxMessage;
 
 //Redémmarer le système

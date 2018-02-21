@@ -1,13 +1,11 @@
 #ifndef SI7006_H
 #define SI7006_H
-
-#include "Arduino.h"
+#include <stdint.h>
 #include <Wire.h>
+#include <SigFox.h>
+#include "sigfoxNetwork.h"
+#define SI7006_ADDR  0x40
 
-// SI7006-A20 I2C address is 0x40(64)
-#define ADDR 0x40
-
-void si7006Init(void);
-void si7006Loop(void);
+void readSI7006(SigfoxMessage * msg);
 
 #endif
