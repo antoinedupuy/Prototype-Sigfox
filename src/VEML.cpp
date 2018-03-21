@@ -1,6 +1,5 @@
 #include "VEML.h"
 
-
 void initVEML(){
   Serial.println("Configure VEML6030");
   Wire.beginTransmission(VEML6030_ADDR);
@@ -15,7 +14,7 @@ void initVEML(){
   delay(10);
   Wire.beginTransmission(VEML6030_ADDR);
   Wire.write(0x03);
-  Wire.write(0x07); // disable power saving
+  Wire.write(0x07); // power saving
   Wire.write(0x00);
   if ( Wire.endTransmission() == 0 ) {
     Serial.println("... OK");
@@ -46,4 +45,5 @@ void readVEML(SigfoxMessage * msg){
   } else {
      Serial.println("VEML6030 - Transmission error(1)");
   }
+  delay(10);
 }

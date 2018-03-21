@@ -4,8 +4,9 @@ void readSI7006(SigfoxMessage * msg){
   byte high,low;
   float temp_f, hygro_f;
   unsigned int temp, hygro = 0;
-  Serial.println("- - - - - - - - - - - - - -");
+
   Serial.println("Read SI7006");
+  //Lecture température
   Wire.beginTransmission(SI7006_ADDR);
   Wire.write(0xE3);
   if ( Wire.endTransmission() == 0 ) {
@@ -23,8 +24,10 @@ void readSI7006(SigfoxMessage * msg){
      temp_f = (175.72 * (float)temp)/65536 - 46.85;
   }
   Serial.print("Temp :");Serial.println(temp_f);
-    msg->temperature = temp_f;
+    msg->temperature = temp_f * 100;
   delay(10);
+
+  //Lecture hygrométrie
   Wire.beginTransmission(SI7006_ADDR);
   Wire.write(0xE5);
   if ( Wire.endTransmission() == 0 ) {
@@ -43,4 +46,5 @@ void readSI7006(SigfoxMessage * msg){
   }
   Serial.print("Hygro :");Serial.println(hygro_f);
   msg->hygrometrie = hygro_f;
+  delay(10);
 }

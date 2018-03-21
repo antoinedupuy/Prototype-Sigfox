@@ -3,33 +3,16 @@
 #include "SI7006.h"
 #include "VEML.h"
 #include <ArduinoLowPower.h>
-/*
-SigfoxMessage msg;
-
-void setup() {
-  Serial.begin(9600);
-
-  CCS811init();
-  sigfoxInit(msg);
-  }
-
-void loop() {
-  Serial.println("--------------Mesure de la qualité de l'air-------------- ");
-  displayDataCCS811(&msg);
-  //Serial.println("--------------Mesure de la température!--------------");
-  //si7006Loop();
-  sendDataSigfox(msg);
-  Serial.println();
-  //LowPower.sleep(1000);
-  delay(6000);
-  //LowPower.sleep(15 * 60 * 1000);   //Endormir le système 15 min
-}*/
+#include "dust.h"
 
 SigfoxMessage msg;
 
 void setup() {
   uint8_t data[4] = {0x11,0xE5,0x72,0x8A}; //Reset key
   uint8_t value = 0;
+
+  pinMode(DUST_IN,OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
 
   pinMode(CC811_nWake_PIN, OUTPUT);
   digitalWrite(CC811_nWake_PIN, LOW); // wake up CC811
@@ -46,19 +29,39 @@ void setup() {
 
   initCCS811(data,value);
   delay(10);
-  sigfoxInit(msg);
+  digitalWrite(CC811_nWake_PIN, HIGH); // sleep CC811
+
+  Serial.println("Go ...");
+  Serial.println("---------------------");
 }
 
 void loop() {
+  //Clignotement Led pour signaler début de loop()
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(500);
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(500);
+
+  sigfoxInit(msg);
+  digitalWrite(CC811_nWake_PIN, LOW); // wake up CC811
+  Serial.println("- - - - - - - - - - - - - -");
   readSI7006(&msg);
-  delay(10);
-
   readVEML(&msg);
-  delay(10);
-
   readCCS811(&msg);
-  delay(10);
-
+  readDust(&msg);
   sendDataSigfox(msg);
-  delay(2000);
+  delay(1000);
+  SigFox.end(); //sleep sigfox
+  digitalWrite(CC811_nWake_PIN, HIGH); // sleep CC811
+
+ // LowPower.sleep(7000);
+
+  //delay(1000);
+}
+
+
+void dummy() {
+  // This function will be called once on device wakeup
+  // You can do some little operations here (like changing variables which will be used in the loop)
+  // Remember to avoid calling delay() and long running functions since this functions executes in interrupt context
 }

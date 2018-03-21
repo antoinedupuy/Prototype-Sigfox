@@ -4,15 +4,6 @@
 #include <Wire.h>
 #include <SigFox.h>
 #include "sigfoxNetwork.h"
-/*#define CC811_ADDR   0x5A
-#define CC811_nWake_PIN 4
-
-#include <Arduino.h>
-#include "sigfoxNetwork.h"
-#include <SparkFunCCS811.h>
-
-void displayDataCCS811(SigfoxMessage * msg);
-void CCS811init();*/
 
 #define CC811_ADDR   0x5A
 #define CC811_nWake_PIN 4
