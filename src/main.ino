@@ -1,3 +1,15 @@
+/*******************************************************************************
+Created by Antoine Dupuy & Martin Cornu - 24/04/18
+
+Prototype of an object connected to the sigfox network capable to measure
+the quality of its environment
+
+Sensors : - CCS811: VOC
+          - DUST
+          - Si7006: temperature and hygrometry
+          - VEML6030: ambiant light
+*******************************************************************************/
+
 #include "sigfoxNetwork.h"
 #include "CCS811.h"
 #include "SI7006.h"
